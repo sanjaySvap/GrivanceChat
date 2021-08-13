@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="user"
+            type="com.svap.chat.ui.chat.model.UsersResult" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/ivProfile"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginBottom="14dp"
+            android:scaleType="fitXY"
+            setProfileImageUrl="@{user.image_name}"
+            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent"
+            android:src="@drawable/dummy_profile"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="18dp"
+            android:layout_marginEnd="18dp"
+            android:ellipsize="marquee"
+            android:gravity="center|start"
+            android:singleLine="true"
+            android:text="@{user.first_name}"
+            android:textColor="#2b2b2b"
+            android:textSize="18sp"
+            app:fontFamily="@font/bold"
+            app:layout_constraintBottom_toTopOf="@+id/tvComments"
+            app:layout_constraintEnd_toStartOf="@+id/tvDate"
+            app:layout_constraintStart_toEndOf="@+id/ivProfile"
+            app:layout_constraintTop_toTopOf="@+id/ivProfile" />
+
+        <TextView
+            android:id="@+id/tvComments"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="18dp"
+            android:layout_marginEnd="18dp"
+            android:ellipsize="marquee"
+            android:gravity="center|start"
+            android:singleLine="true"
+            android:text="@{user.message}"
+            android:textColor="#2b2b2b"
+            android:textSize="14sp"
+            app:fontFamily="@font/semi_bold"
+            app:layout_constraintBottom_toBottomOf="@+id/ivProfile"
+            app:layout_constraintEnd_toStartOf="@+id/v_unread"
+            app:layout_constraintStart_toEndOf="@+id/ivProfile"
+            app:layout_constraintTop_toBottomOf="@+id/tvName" />
+
+        <TextView
+            android:id="@+id/tvDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="18dp"
+            android:gravity="center|start"
+            android:text="12:25"
+            android:textColor="#94c5b6"
+            android:textSize="13sp"
+            app:fontFamily="@font/medium"
+            app:layout_constraintBottom_toBottomOf="@+id/tvName"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tvName" />
+
+        <View
+            android:id="@+id/view_online"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:background="@drawable/bg_online"
+            android:visibility="@{user.is_online()==1 ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="@+id/ivProfile"
+            app:layout_constraintEnd_toEndOf="@+id/ivProfile"
+            app:layout_constraintTop_toTopOf="@+id/ivProfile"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <View
+            android:id="@+id/v_unread"
+            android:layout_width="8dp"
+            android:layout_height="8dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bg_rounded_green"
+            android:visibility="@{user.is_read()==0 ? View.VISIBLE : View.GONE}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tvComments" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
