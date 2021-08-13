@@ -53,8 +53,11 @@ class SignUpActivity : BaseVmActivity<ActivitySignupBinding, AuthViewModel>(
 
     override fun initListener() {
         super.initListener()
-        mBinding.tvLogin.setOnClickListener {
+        mBinding.tvSignUp.setOnClickListener {
             signUp()
+        }
+        mBinding.tvLogin.setOnClickListener {
+            onBackPressed()
         }
 
         mBinding.etDob.setOnClickListener {
@@ -86,14 +89,14 @@ class SignUpActivity : BaseVmActivity<ActivitySignupBinding, AuthViewModel>(
                 mBinding.root.showSnackbar("Please Enter your last name")
                 return@run
             } else if (!ValidationHelper.validatePersonName(lastName)) {
-                mBinding.root.showSnackbar("Please Enter your last name")
+                mBinding.root.showSnackbar("Please Enter valid last name")
                 return@run
             }
 
             if (email.isEmpty()) {
                 mBinding.root.showSnackbar("Please Enter your Email ID")
                 return@run
-            }else if(!ValidationHelper.validateEmail(email)){
+            } else if (!ValidationHelper.validateEmail(email)) {
                 mBinding.root.showSnackbar("Please Enter valid Email")
                 return@run
             }
@@ -114,6 +117,9 @@ class SignUpActivity : BaseVmActivity<ActivitySignupBinding, AuthViewModel>(
             }
 
             if (password.isEmpty() || password.length < 8) {
+                mBinding.root.showSnackbar("Please Enter valid password")
+                return@run
+            } else if (ValidationHelper.validatePassword(password)) {
                 mBinding.root.showSnackbar("Please Enter valid password")
                 return@run
             } else if (password != etCnfPassword.getString()) {

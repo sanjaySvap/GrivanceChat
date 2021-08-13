@@ -24,6 +24,7 @@ import com.svap.chat.databinding.DialogCountrySelectBinding
 import com.svap.chat.ui.authenticate.CountryBottomSheet
 import com.svap.chat.ui.authenticate.LoginActivity
 import com.svap.chat.ui.chat.RecentChatActivity
+import com.svap.chat.ui.dialog.DialogAlert
 import com.svap.chat.ui.home.fragments.EditProfileFragment
 import com.svap.chat.ui.home.fragments.HomeFragment
 import com.svap.chat.ui.home.fragments.SupportFragment
@@ -50,7 +51,7 @@ class HomeActivity : BaseVmActivity<ActivityHomeBinding, HomeViewModel>(
     private val mAllCountriesList = ArrayList<Country>()
     private var mCurrentCountry = "101"
 
-    private var mHomeFragment:HomeFragment?= null
+    private var mHomeFragment: HomeFragment? = null
     private val mSheet: CountryBottomSheet by lazy {
         CountryBottomSheet(
                 mAllCountriesList
@@ -94,7 +95,7 @@ class HomeActivity : BaseVmActivity<ActivityHomeBinding, HomeViewModel>(
     }
 
     private fun updateHome() {
-        if(mHomeFragment == null){
+        if (mHomeFragment == null) {
             mHomeFragment = HomeFragment(mCurrentCountry)
         }
         updateFragmentContainer(mHomeFragment!!)
@@ -171,8 +172,14 @@ class HomeActivity : BaseVmActivity<ActivityHomeBinding, HomeViewModel>(
 
             tvLogout.setOnClickListener {
                 closeDrawer()
-                mSharePresenter.clearData()
-                gotoNewTask(LoginActivity::class.java)
+                DialogAlert(mBinding.root,
+                        message = "Are you sure? You want logout.",
+                        isCancelable = true,
+                        actionText = "Yes",
+                        actionNoText = "No", action = {
+                    mSharePresenter.clearData()
+                    gotoNewTask(LoginActivity::class.java)
+                }).show()
             }
         }
 
@@ -319,9 +326,9 @@ class HomeActivity : BaseVmActivity<ActivityHomeBinding, HomeViewModel>(
         this@HomeActivity.runOnUiThread(object : Runnable {
             override fun run() {
                 Log.d(TAG_SOCKET, "connected ")
-                if(mAllCountriesList.isEmpty()){
+                if (mAllCountriesList.isEmpty()) {
                     mViewModel.getAllCountries()
-                }else{
+                } else {
                     val currentFragment = supportFragmentManager.findFragmentById(R.id.fragment_container)
                     if (currentFragment is HomeFragment) {
                         currentFragment.onConnect()

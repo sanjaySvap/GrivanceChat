@@ -41,7 +41,8 @@ class HomeDataAdapter(
             BaseViewHolder(mBinding.root) {
         override fun bindData(position: Int) {
             mBinding.user = mList[position]
-            mBinding.ivChat.setOnClickListener {
+
+            mBinding.root.setOnClickListener {
                 mCallback.getCallbackItem(mList[position],position)
             }
             mBinding.executePendingBindings()

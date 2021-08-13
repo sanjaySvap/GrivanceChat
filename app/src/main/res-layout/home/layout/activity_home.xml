@@ -44,8 +44,7 @@
                     <com.google.android.material.imageview.ShapeableImageView
                         android:id="@+id/iv_flag"
                         android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:src="@drawable/flag_ac" />
+                        android:layout_height="24dp" />
 
                     <TextView
                         android:id="@+id/tvCountry"
@@ -55,7 +54,7 @@
                         android:drawablePadding="8dp"
                         android:layout_marginStart="8dp"
                         android:layout_marginEnd="8dp"
-                        android:text="India"
+                        android:text=""
                         android:singleLine="true"
                         android:ellipsize="marquee"
                         android:textColor="@color/colorTitle"

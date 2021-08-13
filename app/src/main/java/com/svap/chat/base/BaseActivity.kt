@@ -55,10 +55,10 @@ abstract class BaseActivity<D : ViewDataBinding>(private val resourceId: Int) : 
 
     protected fun onErrorReturn(message: String?) {
         message?.let {
-            noDataMessageTv?.visible()
+            noDataMessage?.visible()
             noDataMessageTv?.text = message
         }?: kotlin.run {
-            noDataMessageTv?.gone()
+            noDataMessage?.gone()
         }
     }
 }

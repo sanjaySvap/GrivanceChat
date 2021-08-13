@@ -4,7 +4,6 @@ import java.util.regex.Pattern
 
 object ValidationHelper {
     val NAME_PATTERN = Pattern.compile("^[a-zA-Z][a-zA-Z\\s]+")
-    var PAN_NUMBER = Pattern.compile("[A-Z]{5}[0-9]{4}[A-Z]{1}")
     private val EMAIL_PATTERN = Pattern.compile("[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,20}")
     private val PASSWORD_PATTERN =
         Pattern.compile("^(?=.*[A-Z])(?=.*[!@#$%^&*])(?=.*\\d)(?!.*(AND|NOT)).*[a-z].*")
@@ -27,6 +26,10 @@ object ValidationHelper {
 
     fun validateOTP(mobile: String): Boolean {
         return MOBILE.matcher(mobile).matches()
+    }
+
+    fun validatePassword(pswword: String): Boolean {
+        return PASSWORD_PATTERN.matcher(pswword).matches()
     }
 
     fun validatePersonName(name: String): Boolean {

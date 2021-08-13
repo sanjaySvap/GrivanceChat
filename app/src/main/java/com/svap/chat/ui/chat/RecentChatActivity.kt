@@ -48,6 +48,8 @@ class RecentChatActivity : BaseSocketActivity<ActivityRecentChatBinding>(
     override fun onStart() {
         super.onStart()
         mSocket?.on("recentChatListResponse", onUserChatList)
+        mSocket?.on("checkOnlineOfline", onOnlineOffLine)
+
     }
 
     override fun onBackPressed() {
@@ -68,6 +70,7 @@ class RecentChatActivity : BaseSocketActivity<ActivityRecentChatBinding>(
         mList.clear()
         mList.addAll(list)
         mAdapter.notifyDataSetChanged()
+
         if (mList.isEmpty()) {
             onErrorReturn("No Data Found")
         } else {
@@ -106,5 +109,10 @@ class RecentChatActivity : BaseSocketActivity<ActivityRecentChatBinding>(
                 onUserChatList(ArrayList())
             }
         }
+    }
+
+    private val onOnlineOffLine = Emitter.Listener { args ->
+        Log.d(TAG_SOCKET, "onOnlineOffLine")
+        getUserList()
     }
 }

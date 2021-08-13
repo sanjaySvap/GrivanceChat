@@ -8,7 +8,6 @@ import com.google.gson.Gson
 import com.svap.chat.R
 import com.svap.chat.base.BaseCallBack
 import com.svap.chat.base.BaseFragment
-import com.svap.chat.base.BaseSocketFragment
 import com.svap.chat.databinding.FragmentHomeBinding
 import com.svap.chat.ui.chat.OneToOneChatActivity
 import com.svap.chat.ui.chat.model.HomeUser
@@ -18,14 +17,16 @@ import com.svap.chat.ui.home.adapter.HomeDataAdapter
 import com.svap.chat.utils.EXTRA_KEY_RECEIVER_ID
 import com.svap.chat.utils.EXTRA_KEY_SOCKET_ID
 import com.svap.chat.utils.EXTRA_KEY_USER_NAME
-import com.svap.chat.utils.extentions.*
+import com.svap.chat.utils.extentions.addOnRefreshListener
+import com.svap.chat.utils.extentions.gone
+import com.svap.chat.utils.extentions.toPx
+import com.svap.chat.utils.extentions.visible
 import com.svap.chat.utils.itemdecor.GridSpacingItemDecoration
 import io.socket.emitter.Emitter
 import org.json.JSONObject
 
 class HomeFragment(val countryId: String) :
-    BaseFragment<FragmentHomeBinding>(R.layout.fragment_home)
-    , BaseCallBack<HomeUser> {
+        BaseFragment<FragmentHomeBinding>(R.layout.fragment_home), BaseCallBack<HomeUser> {
 
     private val TAG_SOCKET = "Sock_HomeFragment"
     private var mLoadingNext = false
@@ -35,19 +36,20 @@ class HomeFragment(val countryId: String) :
         HomeDataAdapter(mUserList, this)
     }
 
-    private var mHomeActivity:HomeActivity?= null
+    private var mHomeActivity: HomeActivity? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if(context is HomeActivity){
+        if (context is HomeActivity) {
             mHomeActivity = context
         }
     }
+
     override fun initAdapter() {
         super.initAdapter()
         mBinding.recyclerView.adapter = mAdapter
         mBinding.recyclerView.addItemDecoration(
-            GridSpacingItemDecoration(2, 18.toPx, true)
+                GridSpacingItemDecoration(2, 18.toPx, true)
         )
     }
 
@@ -82,7 +84,7 @@ class HomeFragment(val countryId: String) :
         data.put("token", mSharePresenter.token)
         data.put("page", mPage)
         data.put("country_id", mSharePresenter.chooseCountryId)
-        Log.d(TAG_SOCKET, "getHomeUserList "+data)
+        Log.d(TAG_SOCKET, "getHomeUserList " + data)
 
         mHomeActivity?.mSocket?.emit("chatList", data)
     }
@@ -94,15 +96,15 @@ class HomeFragment(val countryId: String) :
         mUserList.addAll(list)
         mAdapter.notifyDataSetChanged()
 
-        if(mUserList.isEmpty()){
+        if (mUserList.isEmpty()) {
             onErrorReturn("No user found for this country")
-        }else{
+        } else {
             onErrorReturn(null)
         }
     }
 
     override fun getCallbackItem(item: HomeUser, position: Int, tag: String) {
-        if(item.is_online ==1){
+        if (item.is_online == 1) {
             val intent = Intent(requireActivity(), OneToOneChatActivity::class.java)
             intent.putExtra(EXTRA_KEY_USER_NAME, mUserList[position].first_name)
             intent.putExtra(EXTRA_KEY_RECEIVER_ID, mUserList[position].id)
@@ -113,7 +115,7 @@ class HomeFragment(val countryId: String) :
 
     private val onHomeUserList = Emitter.Listener { args ->
         Log.d(TAG_SOCKET, "onHomeUserList call onUserChatList")
-        if(activity != null && isAdded){
+        if (activity != null && isAdded) {
             requireActivity().runOnUiThread {
                 val data = args[0] as JSONObject
                 val response = Gson().fromJson(data.toString(), UserResponse::class.java)
@@ -129,24 +131,28 @@ class HomeFragment(val countryId: String) :
 
     private val onOnlineOffLine = Emitter.Listener { args ->
         Log.d(TAG_SOCKET, "onOnlineOffLine")
-        requireActivity().runOnUiThread {
-            getHomeUserList()
+        if (activity != null && isAdded) {
+            requireActivity().runOnUiThread {
+                getHomeUserList()
+            }
         }
     }
 
     private val messageSeenStatusResponse = Emitter.Listener { args ->
         Log.d(TAG_SOCKET, "messageSeenStatusResponse")
-        requireActivity().runOnUiThread {
-            val response = args[0] as JSONObject
-            val isRead = if (response.has("is_read")) response.getInt("is_read") else 1
-            Log.d(TAG_SOCKET, "messageSeenStatusResponse " + response)
-            if (activity != null && activity is HomeActivity) {
-                (activity as HomeActivity).setChatIcon(isRead)
+        if (activity != null && isAdded) {
+            requireActivity().runOnUiThread {
+                val response = args[0] as JSONObject
+                val isRead = if (response.has("is_read")) response.getInt("is_read") else 1
+                Log.d(TAG_SOCKET, "messageSeen " + response)
+                if (activity != null && activity is HomeActivity) {
+                    (activity as HomeActivity).setChatIcon(isRead)
+                }
             }
         }
     }
 
-     fun initSocket(){
+    fun initSocket() {
         mHomeActivity?.mSocket?.on("chatListResponse", onHomeUserList)
         mHomeActivity?.mSocket?.on("checkOnlineOfline", onOnlineOffLine)
         mHomeActivity?.mSocket?.on("messageSeenStatusResponse", messageSeenStatusResponse)

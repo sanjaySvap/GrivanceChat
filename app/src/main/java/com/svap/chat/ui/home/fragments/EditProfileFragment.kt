@@ -66,6 +66,7 @@ class EditProfileFragment : BaseVmFragment<FragmentEditProfileBinding, ProfileVi
             mBinding.tvDob.text = dob ?: ""
             mCountry = residential_country
 
+            mDob = dob
             mBinding.checkCall.isChecked = Preference.equals("call",true)
             setProfileImageUrl(mBinding.ivProfile,image_name)
         }
@@ -152,10 +153,9 @@ class EditProfileFragment : BaseVmFragment<FragmentEditProfileBinding, ProfileVi
 
         val pref = if(mBinding.checkCall.isChecked)"Call" else ""
         val map = hashMapOf(
+            "user_name" to mSharePresenter.getCurrentUser().user_name.toRequestBody(),
             "first_name" to firstName.toRequestBody(),
             "last_name" to lastName.toRequestBody(),
-            "email" to email.toRequestBody(),
-            "mobile_no" to mobile.toRequestBody(),
             "dob" to mDob.toRequestBody(),
             "residential_Country" to mCountry.toRequestBody(),
             "Preference" to pref.toRequestBody(),

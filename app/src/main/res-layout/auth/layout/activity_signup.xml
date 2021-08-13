@@ -149,7 +149,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/tvLogin"
+                android:id="@+id/tvSignUp"
                 style="@style/Material.Button"
                 android:layout_width="match_parent"
                 android:layout_marginTop="60dp"
@@ -176,6 +176,7 @@
                     android:textSize="16sp" />
 
                 <TextView
+                    android:id="@+id/tvLogin"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
