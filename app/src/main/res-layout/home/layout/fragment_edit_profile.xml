@@ -76,15 +76,6 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <EditText
-                android:id="@+id/et_last_name"
-                style="@style/CustomEditText"
-                android:layout_width="match_parent"
-                android:layout_marginHorizontal="16dp"
-                android:layout_marginTop="20dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
             <TextView
                 android:id="@+id/tv_dob"
                 style="@style/TexView.DropDown"

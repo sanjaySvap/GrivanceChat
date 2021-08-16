@@ -2,6 +2,8 @@ package com.svap.chat.ui.authenticate
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.TextUtils
+import android.util.Log
 import androidx.lifecycle.Observer
 import com.fantasy.utils.extentions.gotoNewTask
 import com.svap.chat.R
@@ -77,6 +79,7 @@ class SignUpActivity : BaseVmActivity<ActivitySignupBinding, AuthViewModel>(
             val mobile = mBinding.etMobie.getString()
             val password = mBinding.etPassword.getString()
 
+
             if (firstName.isEmpty()) {
                 mBinding.root.showSnackbar("Please Enter your first name")
                 return@run
@@ -119,10 +122,13 @@ class SignUpActivity : BaseVmActivity<ActivitySignupBinding, AuthViewModel>(
             if (password.isEmpty() || password.length < 8) {
                 mBinding.root.showSnackbar("Please Enter valid password")
                 return@run
-            } else if (ValidationHelper.validatePassword(password)) {
-                mBinding.root.showSnackbar("Please Enter valid password")
+            }
+            val msg = ValidationHelper.validatePassword(password)
+            if (!TextUtils.isEmpty(msg)) {
+                mBinding.root.showSnackbar(msg?:"")
                 return@run
-            } else if (password != etCnfPassword.getString()) {
+            }
+            if (password != etCnfPassword.getString()) {
                 mBinding.root.showSnackbar("Password should be matched")
                 return@run
             }

@@ -9,6 +9,7 @@ import com.svap.chat.base.BaseVmActivity
 import com.svap.chat.databinding.ActivityChangePasswordBinding
 import com.svap.chat.ui.authenticate.viewModel.AuthViewModel
 import com.svap.chat.ui.home.HomeActivity
+import com.svap.chat.utils.ValidationHelper
 import com.svap.chat.utils.app_enum.Extra
 import com.svap.chat.utils.extentions.getString
 import com.svap.chat.utils.extentions.showSnackbar
@@ -31,8 +32,10 @@ class ChangePasswordActivity : BaseVmActivity<ActivityChangePasswordBinding, Aut
         mBinding.tvLogin.setOnClickListener {
             val password = mBinding.etP1.getString()
             val password2 = mBinding.etP2.getString()
-            if (TextUtils.isEmpty(password) || password.length <8) {
-                showToast("Enter valid password")
+
+            val msg = ValidationHelper.validatePassword(password)
+            if (!TextUtils.isEmpty(msg)) {
+                mBinding.root.showSnackbar(msg?:"")
                 return@setOnClickListener
             }
             if(password != password2){

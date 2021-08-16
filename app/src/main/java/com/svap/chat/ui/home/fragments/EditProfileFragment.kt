@@ -14,7 +14,6 @@ import com.svap.chat.R
 import com.svap.chat.base.BaseVmFragment
 import com.svap.chat.databinding.FragmentEditProfileBinding
 import com.svap.chat.ui.authenticate.CountryBottomSheet
-import com.svap.chat.ui.authenticate.model.CountryModel
 import com.svap.chat.ui.dialog.DialogAlert
 import com.svap.chat.ui.home.viewModel.ProfileViewModel
 import com.svap.chat.utils.app_enum.Constant
@@ -29,8 +28,8 @@ import java.io.File
 
 
 class EditProfileFragment : BaseVmFragment<FragmentEditProfileBinding, ProfileViewModel>(
-    R.layout.fragment_edit_profile,
-    ProfileViewModel::class
+        R.layout.fragment_edit_profile,
+        ProfileViewModel::class
 ) {
 
     private var mIamgePath = ""
@@ -41,7 +40,7 @@ class EditProfileFragment : BaseVmFragment<FragmentEditProfileBinding, ProfileVi
     }
     private val mSheet: CountryBottomSheet by lazy {
         CountryBottomSheet(
-            mAllCountriesList
+                mAllCountriesList
         ) {
             mBinding.tvCountry.text = it.Name
             mCountry = it.Name
@@ -58,17 +57,16 @@ class EditProfileFragment : BaseVmFragment<FragmentEditProfileBinding, ProfileVi
 
     private fun initProfile() {
         mSharePresenter.getCurrentUser().run {
-            mBinding.etFirstName.setText("$first_name")
-            mBinding.etLastName.setText( "$last_name")
-            mBinding.etMobile.setText(mobile_no?:"")
+            mBinding.etFirstName.setText("$first_name $last_name")
+            mBinding.etMobile.setText(mobile_no ?: "")
             mBinding.etEmail.setText(email ?: "")
             mBinding.tvCountry.text = residential_country
             mBinding.tvDob.text = dob ?: ""
             mCountry = residential_country
 
             mDob = dob
-            mBinding.checkCall.isChecked = Preference.equals("call",true)
-            setProfileImageUrl(mBinding.ivProfile,image_name)
+            mBinding.checkCall.isChecked = Preference.equals("call", true)
+            setProfileImageUrl(mBinding.ivProfile, image_name)
         }
     }
 
@@ -82,40 +80,40 @@ class EditProfileFragment : BaseVmFragment<FragmentEditProfileBinding, ProfileVi
         super.initClicks()
         mBinding.ivCamera.setOnClickListener {
             requireActivity().optionDialog("How would you like to add an photo?",
-                primaryKey = "Gallery",
-                secondaryKey = "Camera",
-                primaryKeyAction = {
-                    PermissionHelper(requireActivity()).checkPermissions(
-                        arrayOf(
-                            android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                            android.Manifest.permission.READ_EXTERNAL_STORAGE
-                        )
-                    ) {
-                        if (it) {
-                            pickFromGallery()
-                        } else {
-                            requireActivity().showToast("Storage permission required!!.")
+                    primaryKey = "Gallery",
+                    secondaryKey = "Camera",
+                    primaryKeyAction = {
+                        PermissionHelper(requireActivity()).checkPermissions(
+                                arrayOf(
+                                        android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                                        android.Manifest.permission.READ_EXTERNAL_STORAGE
+                                )
+                        ) {
+                            if (it) {
+                                pickFromGallery()
+                            } else {
+                                requireActivity().showToast("Storage permission required!!.")
+                            }
                         }
-                    }
-                },
-                secondaryKeyAction = {
-                    PermissionHelper(requireActivity()).checkPermissions(
-                        arrayOf(
-                            android.Manifest.permission.CAMERA
-                        )
-                    ) {
-                        if (it) {
-                            startActivityForResult(
-                                Intent.createChooser(
-                                    Intent(MediaStore.ACTION_IMAGE_CAPTURE),
-                                    "Capture Image"
-                                ), Constant.REQUEST_CAMERA
-                            )
-                        } else {
-                            requireActivity().showToast("Camera permission required!!.")
+                    },
+                    secondaryKeyAction = {
+                        PermissionHelper(requireActivity()).checkPermissions(
+                                arrayOf(
+                                        android.Manifest.permission.CAMERA
+                                )
+                        ) {
+                            if (it) {
+                                startActivityForResult(
+                                        Intent.createChooser(
+                                                Intent(MediaStore.ACTION_IMAGE_CAPTURE),
+                                                "Capture Image"
+                                        ), Constant.REQUEST_CAMERA
+                                )
+                            } else {
+                                requireActivity().showToast("Camera permission required!!.")
+                            }
                         }
-                    }
-                })
+                    })
         }
 
         mBinding.tvCountry.setOnClickListener {
@@ -132,63 +130,65 @@ class EditProfileFragment : BaseVmFragment<FragmentEditProfileBinding, ProfileVi
     }
 
     private fun edirProfile() {
+        val names = mBinding.etFirstName.getString().split(" ")
         val email = mBinding.etEmail.getString()
         val mobile = mBinding.etMobile.getString()
-        val firstName = mBinding.etFirstName.getString()
-        val lastName =  mBinding.etLastName.getString()
+
+        val firstName = names[0]
+        val lastName = if (names.size > 1) names[names.size - 1] else ""
 
         if (firstName.isEmpty()) {
             mBinding.root.showSnackbar("Please Enter your first name")
             return
         }
 
-        if(email.isEmpty()){
+        if (email.isEmpty()) {
             requireActivity().showToast("Please Enter your Email ID")
             return
         }
-        if(mobile.isEmpty()){
+        if (mobile.isEmpty()) {
             requireActivity().showToast("Please Enter your mobile number")
             return
         }
 
-        val pref = if(mBinding.checkCall.isChecked)"Call" else ""
+        val pref = if (mBinding.checkCall.isChecked) "Call" else ""
         val map = hashMapOf(
-            "user_name" to mSharePresenter.getCurrentUser().user_name.toRequestBody(),
-            "first_name" to firstName.toRequestBody(),
-            "last_name" to lastName.toRequestBody(),
-            "dob" to mDob.toRequestBody(),
-            "residential_Country" to mCountry.toRequestBody(),
-            "Preference" to pref.toRequestBody(),
+                "user_name" to mSharePresenter.getCurrentUser().user_name.toRequestBody(),
+                "first_name" to firstName.toRequestBody(),
+                "last_name" to lastName.toRequestBody(),
+                "dob" to mDob.toRequestBody(),
+                "residential_Country" to mCountry.toRequestBody(),
+                "Preference" to pref.toRequestBody(),
         )
-        Log.d("imagePath","imagePath "+mIamgePath)
-        if(mIamgePath =="" && !TextUtils.isEmpty(mSharePresenter.getCurrentUser().image_name)){
-            mIamgePath =mSharePresenter.imagePath
+        Log.d("imagePath", "imagePath " + mIamgePath)
+        if (mIamgePath == "" && !TextUtils.isEmpty(mSharePresenter.getCurrentUser().image_name)) {
+            mIamgePath = mSharePresenter.imagePath
         }
         mViewModel.editProfile(
-            map,
-            mIamgePath
-        ){
+                map,
+                mIamgePath
+        ) {
             mSharePresenter.imagePath = mIamgePath
             DialogAlert(
-                view = mBinding.root,
-                message = it,
-                actionText = "OK",
+                    view = mBinding.root,
+                    message = it,
+                    actionText = "OK",
             ).show()
         }
     }
 
     private fun pickFromGallery() {
         val intent = Intent(Intent.ACTION_GET_CONTENT)
-            .setType("image/*")
-            .addCategory(Intent.CATEGORY_OPENABLE)
+                .setType("image/*")
+                .addCategory(Intent.CATEGORY_OPENABLE)
         val mimeTypes =
-            arrayOf("image/jpeg", "image/png")
+                arrayOf("image/jpeg", "image/png")
         intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes)
         startActivityForResult(
-            Intent.createChooser(
-                intent,
-                "Select"
-            ), Constant.REQUEST_GALLERY
+                Intent.createChooser(
+                        intent,
+                        "Select"
+                ), Constant.REQUEST_GALLERY
         )
     }
 
@@ -204,8 +204,8 @@ class EditProfileFragment : BaseVmFragment<FragmentEditProfileBinding, ProfileVi
                 response.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
 
                 UCrop.of(Uri.fromFile(destination), Uri.fromFile(destination))
-                    .withAspectRatio(0.8F, 1F)
-                    .start(requireContext(), this)
+                        .withAspectRatio(0.8F, 1F)
+                        .start(requireContext(), this)
             }
         }
 
@@ -216,15 +216,15 @@ class EditProfileFragment : BaseVmFragment<FragmentEditProfileBinding, ProfileVi
                 if (!file.exists()) file.createNewFile()
                 data?.data?.let { sUri ->
                     UCrop.of(sUri, Uri.fromFile(file))
-                        .withAspectRatio(0.8F, 1F)
-                        .start(requireActivity(), this)
+                            .withAspectRatio(0.8F, 1F)
+                            .start(requireActivity(), this)
                 }
             }
         } else if (resultCode == Activity.RESULT_OK && requestCode == UCrop.REQUEST_CROP) {
             data?.let {
                 UCrop.getOutput(it)?.let { resultUri ->
                     mIamgePath = resultUri.getRealPath(requireContext())
-                    Log.d("mImagePath"," "+mIamgePath)
+                    Log.d("mImagePath", " " + mIamgePath)
                     setProfile(resultUri)
                 }
             }
