@@ -204,7 +204,7 @@ class EditProfileFragment : BaseVmFragment<FragmentEditProfileBinding, ProfileVi
                 response.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
 
                 UCrop.of(Uri.fromFile(destination), Uri.fromFile(destination))
-                        .withAspectRatio(0.8F, 1F)
+                        .withAspectRatio(27F, 40F)
                         .start(requireContext(), this)
             }
         }
@@ -216,7 +216,7 @@ class EditProfileFragment : BaseVmFragment<FragmentEditProfileBinding, ProfileVi
                 if (!file.exists()) file.createNewFile()
                 data?.data?.let { sUri ->
                     UCrop.of(sUri, Uri.fromFile(file))
-                            .withAspectRatio(0.8F, 1F)
+                            .withAspectRatio(27F, 40F)
                             .start(requireActivity(), this)
                 }
             }
@@ -224,7 +224,6 @@ class EditProfileFragment : BaseVmFragment<FragmentEditProfileBinding, ProfileVi
             data?.let {
                 UCrop.getOutput(it)?.let { resultUri ->
                     mIamgePath = resultUri.getRealPath(requireContext())
-                    Log.d("mImagePath", " " + mIamgePath)
                     setProfile(resultUri)
                 }
             }

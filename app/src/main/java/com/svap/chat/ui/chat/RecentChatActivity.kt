@@ -49,7 +49,6 @@ class RecentChatActivity : BaseSocketActivity<ActivityRecentChatBinding>(
         super.onStart()
         mSocket?.on("recentChatListResponse", onUserChatList)
         mSocket?.on("checkOnlineOfline", onOnlineOffLine)
-
     }
 
     override fun onBackPressed() {
@@ -70,9 +69,8 @@ class RecentChatActivity : BaseSocketActivity<ActivityRecentChatBinding>(
         mList.clear()
         mList.addAll(list)
         mAdapter.notifyDataSetChanged()
-
         if (mList.isEmpty()) {
-            onErrorReturn("No Data Found")
+            onErrorReturn("No recent chat")
         } else {
             onErrorReturn(null)
         }

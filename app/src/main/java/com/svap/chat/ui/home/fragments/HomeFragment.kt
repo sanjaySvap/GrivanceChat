@@ -49,13 +49,14 @@ class HomeFragment(val countryId: String) :
         super.initAdapter()
         mBinding.recyclerView.adapter = mAdapter
         mBinding.recyclerView.addItemDecoration(
-                GridSpacingItemDecoration(2, 18.toPx, true)
+                GridSpacingItemDecoration(2, 20.toPx, true)
         )
     }
 
     override fun initListener() {
         super.initListener()
         mBinding.swipeRefresh.addOnRefreshListener {
+            getMessageStatus()
             getHomeUserList()
         }
     }
@@ -105,6 +106,7 @@ class HomeFragment(val countryId: String) :
 
     override fun getCallbackItem(item: HomeUser, position: Int, tag: String) {
         if (item.is_online == 1) {
+            mHomeActivity?.destroySocket()
             val intent = Intent(requireActivity(), OneToOneChatActivity::class.java)
             intent.putExtra(EXTRA_KEY_USER_NAME, mUserList[position].first_name)
             intent.putExtra(EXTRA_KEY_RECEIVER_ID, mUserList[position].id)
@@ -119,7 +121,7 @@ class HomeFragment(val countryId: String) :
             requireActivity().runOnUiThread {
                 val data = args[0] as JSONObject
                 val response = Gson().fromJson(data.toString(), UserResponse::class.java)
-                Log.d("onHomeUserList", " " + data)
+                Log.d("onHomeUserList", " $data")
                 if (!response.error) {
                     onHomeUserList(response.userChatList ?: ArrayList())
                 } else {

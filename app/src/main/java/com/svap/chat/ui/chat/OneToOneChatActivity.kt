@@ -121,6 +121,8 @@ class OneToOneChatActivity : BaseSocketActivity<ActivityOneToChatBinding>(
     }
 
     private fun addMessageToList(messageModel: MessageModel) {
+        onErrorReturn(null)
+
         messagesList.add(messageModel)
         messageAdapter.notifyItemChanged(messageAdapter.itemCount)
         mBinding.recyclerView.scrollToPosition(messageAdapter.itemCount - 1)
@@ -141,12 +143,11 @@ class OneToOneChatActivity : BaseSocketActivity<ActivityOneToChatBinding>(
             val response = Gson().fromJson(data.toString(), AllMessageResponse::class.java)
             messagesList.clear()
             response.userChat?.let { messagesList.addAll(it) }
-            messageAdapter.notifyDataSetChanged()
-            mBinding.recyclerView.scrollToPosition(messageAdapter.itemCount - 1)
-
             if (messagesList.isEmpty()) {
-                onErrorReturn("No nessage found")
+                onErrorReturn("No message found")
             } else {
+                messageAdapter.notifyDataSetChanged()
+                mBinding.recyclerView.scrollToPosition(messageAdapter.itemCount - 1)
                 onErrorReturn(null)
             }
             Log.d("dataResponse", "onAllMessages " + data)

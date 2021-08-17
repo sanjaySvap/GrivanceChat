@@ -74,6 +74,7 @@
                         android:padding="6dp"/>
                 </LinearLayout>
             </LinearLayout>
+            <include layout="@layout/layout_no_item" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
 

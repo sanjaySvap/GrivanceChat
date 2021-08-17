@@ -1,14 +1,14 @@
 package com.svap.chat.base
+
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.widget.Toast
 import androidx.databinding.ViewDataBinding
 import com.google.gson.Gson
-import com.svap.chat.ui.chat.model.ChatUserResponse
+import com.svap.chat.MyApp
 import com.svap.chat.ui.chat.model.MessageDataModel
 import com.svap.chat.ui.chat.model.MessageModel
-import com.svap.chat.ui.chat.model.UsersResult
 import com.svap.chat.utils.NO_NETWORK_ERROR
 import com.svap.chat.utils.SOCKET_LOCAL
 import io.socket.client.IO
@@ -19,7 +19,7 @@ import org.json.JSONException
 import org.json.JSONObject
 
 abstract class BaseSocketActivity<D : ViewDataBinding>(
-    resourceId: Int,
+        resourceId: Int,
 ) : BaseActivity<D>(resourceId) {
     val TAG_SOCKET = "SOCKET_CHAT"
     var mSocket: Socket? = null
@@ -91,7 +91,7 @@ abstract class BaseSocketActivity<D : ViewDataBinding>(
             if (!isConnected) {
                 onConnectionError(NO_NETWORK_ERROR)
             }
-            Log.d(TAG_SOCKET, "onConnectError "+Gson().toJson(it))
+            Log.d(TAG_SOCKET, "onConnectError " + Gson().toJson(it))
         }
     }
 
@@ -105,7 +105,7 @@ abstract class BaseSocketActivity<D : ViewDataBinding>(
                     try {
                         val msg = Gson().fromJson(json.toString(), MessageDataModel::class.java)
                         onNewMessage(msg.getmsgreceived)
-                    }catch (e: JSONException) {
+                    } catch (e: JSONException) {
                         return
                     }
                 }

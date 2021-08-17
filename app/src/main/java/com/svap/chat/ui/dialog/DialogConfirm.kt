@@ -8,16 +8,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import com.svap.chat.databinding.DialogAlertBinding
+import com.svap.chat.databinding.DialogConfirmBinding
 
-class DialogAlert(view: View, title: String? = null,
-                  message: String,
-                  isCancelable: Boolean = true,
-                  actionText: String,
-                  actionNoText: String?="",
-                  action: () -> Unit = {}
+class DialogConfirm(view: View, title: String? = null,
+                    message: String,
+                    isCancelable: Boolean = true,
+                    actionText: String,
+                    actionNoText: String?="",
+                    action: () -> Unit = {}
 ) : Dialog(view.context) {
-    private val viewDataBinding: DialogAlertBinding by lazy {
-        DialogAlertBinding.inflate(layoutInflater, view.parent as ViewGroup, false)
+    private val viewDataBinding: DialogConfirmBinding by lazy {
+        DialogConfirmBinding.inflate(layoutInflater, view.parent as ViewGroup, false)
     }
 
     init {
@@ -28,6 +29,9 @@ class DialogAlert(view: View, title: String? = null,
                     it.actionText = actionText
                     it.actionNoText = actionNoText
 
+                    it.skipBtn.setOnClickListener {
+                        dismiss()
+                    }
                     it.actionBtn.setOnClickListener {
                         dismiss()
                         action()

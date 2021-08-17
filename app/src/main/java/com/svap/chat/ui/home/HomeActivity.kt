@@ -25,6 +25,7 @@ import com.svap.chat.ui.authenticate.CountryBottomSheet
 import com.svap.chat.ui.authenticate.LoginActivity
 import com.svap.chat.ui.chat.RecentChatActivity
 import com.svap.chat.ui.dialog.DialogAlert
+import com.svap.chat.ui.dialog.DialogConfirm
 import com.svap.chat.ui.home.fragments.EditProfileFragment
 import com.svap.chat.ui.home.fragments.HomeFragment
 import com.svap.chat.ui.home.fragments.SupportFragment
@@ -134,7 +135,6 @@ class HomeActivity : BaseVmActivity<ActivityHomeBinding, HomeViewModel>(
                     return@setOnClickListener
                 }
                 setTitle("")
-
                 updateFragmentContainer(mHomeFragment!!)
             }
 
@@ -172,7 +172,7 @@ class HomeActivity : BaseVmActivity<ActivityHomeBinding, HomeViewModel>(
 
             tvLogout.setOnClickListener {
                 closeDrawer()
-                DialogAlert(mBinding.root,
+                DialogConfirm(mBinding.root,
                         message = "Are you sure? You want logout.",
                         isCancelable = true,
                         actionText = "Yes",
@@ -293,7 +293,7 @@ class HomeActivity : BaseVmActivity<ActivityHomeBinding, HomeViewModel>(
 
     override fun onStop() {
         super.onStop()
-        destroySocket()
+        mSocket?.disconnect()
     }
 
     private fun initSocket() {
