@@ -51,6 +51,10 @@ val networkModule = module {
                     .addHeader("language", "en")
                     .addHeader("version", BuildConfig.VERSION_NAME)
                     .addHeader("platform", "android")
+                    .addHeader("device_id", prehelper.deviceId)
+                    .addHeader("device_token", prehelper.deviceToken)
+                    .addHeader("device_type", "android")
+
                     .build()
                 chain.proceed(request)
             }

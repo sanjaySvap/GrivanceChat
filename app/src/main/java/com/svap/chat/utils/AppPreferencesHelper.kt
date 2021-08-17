@@ -11,6 +11,14 @@ internal constructor(val mPrefs: SharedPreferences) {
         mPrefs.edit().clear().apply()
     }
 
+    var deviceId: String
+        get() = mPrefs.getString("deviceId", "") ?: ""
+        set(value) = mPrefs.edit().putString("deviceId", value).apply()
+
+    var deviceToken: String
+        get() = mPrefs.getString("deviceToken", "") ?: ""
+        set(value) = mPrefs.edit().putString("deviceToken", value).apply()
+
     var chooseCountry: Boolean
         get() = mPrefs.getBoolean("chooseCountry", false)
         set(value) = mPrefs.edit().putBoolean("chooseCountry", value).apply()
