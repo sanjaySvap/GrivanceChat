@@ -62,4 +62,15 @@ abstract class BaseViewModel() : ViewModel() {
         _errorMessage.postValue(ErrorDataModel(message ?: "", errorType))
     }
 
+    fun checkUserBlock(success:(block:Boolean,msg:String)->Unit) {
+        requestData(
+            action = { apiService.checkBlockUser(mSharedPresenter.getCurrentUser().email) },
+            success = {
+                success(it.data?.is_block?:false,it.message)
+            },
+            progressAction = ProgressAction.NONE,
+            errorType = ErrorType.NONE,
+        )
+    }
+
 }

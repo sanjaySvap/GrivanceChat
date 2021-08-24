@@ -68,7 +68,7 @@
                 android:id="@+id/iv_chat"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
+                android:layout_marginEnd="8dp"
                 android:layout_marginBottom="16dp"
                 android:src="@drawable/ic_chat_circle"
                 app:layout_constraintBottom_toTopOf="@+id/iv_call"
@@ -78,7 +78,7 @@
                 android:id="@+id/iv_call"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
+                android:layout_marginEnd="8dp"
                 android:layout_marginBottom="16dp"
                 android:visibility='@{user.preference.equalsIgnoreCase("call") ? View.VISIBLE :View.GONE}'
                 android:src="@drawable/ic_dial_circle"

@@ -1,6 +1,8 @@
 package com.svap.chat.ui.chat
 
 import android.os.Bundle
+import android.text.InputFilter
+import android.text.Spanned
 import android.text.TextUtils
 import android.util.Log
 import com.google.gson.Gson
@@ -19,10 +21,10 @@ import io.socket.emitter.Emitter
 import org.json.JSONObject
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
+
 
 class OneToOneChatActivity : BaseSocketActivity<ActivityOneToChatBinding>(
-    R.layout.activity_one_to_chat
+        R.layout.activity_one_to_chat
 ) {
     private val messagesList: ArrayList<MessageModel> = arrayListOf()
     private val messageAdapter: OneToOneChatAdapter by lazy {
@@ -43,6 +45,7 @@ class OneToOneChatActivity : BaseSocketActivity<ActivityOneToChatBinding>(
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mBinding.mTitle = mReceiverUserName
+        checkBlock()
     }
 
     override fun onStart() {
@@ -66,27 +69,31 @@ class OneToOneChatActivity : BaseSocketActivity<ActivityOneToChatBinding>(
 
     override fun initAdapter() {
         mBinding.recyclerView.addItemDecoration(
-            CustomItemVerDecoration(12)
+                CustomItemVerDecoration(12)
         )
         mBinding.recyclerView.adapter = messageAdapter
     }
 
     override fun initListener() {
         super.initListener()
+        mBinding.etMsg.filters = arrayOf<InputFilter>(EmojiExcludeFilter())
+
         mBinding.ivSend.setOnClickListener {
+
             if (!TextUtils.isEmpty(mBinding.etMsg.text.toString().trim())) {
+                checkBlock()
                 messageToSend = mBinding.etMsg.text.toString().trim()
                 emitMessage()
 
                 val messageModel = MessageModel(
-                    from = mSharePresenter.getCurrentUser().id,
-                    to = mReceiverUserId,
-                    type = "text",
-                    file = "",
-                    isRead = 0,
-                    message = messageToSend,
-                    created_at = getCurrentDate(),
-                    timestamp = System.currentTimeMillis().toString()
+                        from = mSharePresenter.getCurrentUser().id,
+                        to = mReceiverUserId,
+                        type = "text",
+                        file = "",
+                        isRead = 0,
+                        message = messageToSend,
+                        created_at = getCurrentDate(),
+                        timestamp = System.currentTimeMillis().toString()
                 )
                 addMessageToList(messageModel)
                 mBinding.etMsg.setText("")
@@ -168,4 +175,15 @@ class OneToOneChatActivity : BaseSocketActivity<ActivityOneToChatBinding>(
         }
     }
 
+    private class EmojiExcludeFilter : InputFilter {
+        override fun filter(source: CharSequence, start: Int, end: Int, dest: Spanned, dstart: Int, dend: Int): CharSequence? {
+            for (i in start until end) {
+                val type = Character.getType(source[i])
+                if (type == Character.SURROGATE.toInt() || type == Character.OTHER_SYMBOL.toInt()) {
+                    return ""
+                }
+            }
+            return null
+        }
+    }
 }

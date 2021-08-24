@@ -4,16 +4,21 @@ import android.content.Context
 import android.content.Intent
 import android.util.Log
 import com.fantasy.utils.extentions.goto
+import com.fantasy.utils.extentions.gotoNewTask
 import com.google.gson.Gson
 import com.svap.chat.R
 import com.svap.chat.base.BaseCallBack
 import com.svap.chat.base.BaseFragment
+import com.svap.chat.base.BaseVmFragment
 import com.svap.chat.databinding.FragmentHomeBinding
+import com.svap.chat.ui.authenticate.LoginActivity
 import com.svap.chat.ui.chat.OneToOneChatActivity
 import com.svap.chat.ui.chat.model.HomeUser
 import com.svap.chat.ui.chat.model.UserResponse
+import com.svap.chat.ui.dialog.DialogAlert
 import com.svap.chat.ui.home.HomeActivity
 import com.svap.chat.ui.home.adapter.HomeDataAdapter
+import com.svap.chat.ui.home.viewModel.HomeViewModel
 import com.svap.chat.utils.EXTRA_KEY_RECEIVER_ID
 import com.svap.chat.utils.EXTRA_KEY_SOCKET_ID
 import com.svap.chat.utils.EXTRA_KEY_USER_NAME
@@ -25,8 +30,8 @@ import com.svap.chat.utils.itemdecor.GridSpacingItemDecoration
 import io.socket.emitter.Emitter
 import org.json.JSONObject
 
-class HomeFragment(val countryId: String) :
-        BaseFragment<FragmentHomeBinding>(R.layout.fragment_home), BaseCallBack<HomeUser> {
+class HomeFragment() :
+        BaseVmFragment<FragmentHomeBinding,HomeViewModel>(R.layout.fragment_home,HomeViewModel::class), BaseCallBack<HomeUser> {
 
     private val TAG_SOCKET = "Sock_HomeFragment"
     private var mLoadingNext = false
@@ -71,22 +76,25 @@ class HomeFragment(val countryId: String) :
             progressBar?.visible()
             getMessageStatus()
             getHomeUserList()
+
         }, 50)
     }
 
     private fun getMessageStatus() {
         val data = JSONObject()
         data.put("from", mSharePresenter.getCurrentUser().id)
+        Log.d(TAG_SOCKET, "emit getMessageStatus " + mHomeActivity?.mSocket?.id())
+
         mHomeActivity?.mSocket?.emit("messageSeenStatus", data)
     }
 
     private fun getHomeUserList() {
+        checkBlock()
         val data = JSONObject()
         data.put("token", mSharePresenter.token)
         data.put("page", mPage)
         data.put("country_id", mSharePresenter.chooseCountryId)
         Log.d(TAG_SOCKET, "getHomeUserList " + data)
-
         mHomeActivity?.mSocket?.emit("chatList", data)
     }
 

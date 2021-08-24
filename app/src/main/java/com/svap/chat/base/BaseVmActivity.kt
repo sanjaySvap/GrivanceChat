@@ -7,7 +7,9 @@ import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
+import com.fantasy.utils.extentions.gotoNewTask
 import com.svap.chat.R
+import com.svap.chat.ui.authenticate.LoginActivity
 import com.svap.chat.ui.dialog.DialogAlert
 import com.svap.chat.ui.dialog.DialogProgress
 import com.svap.chat.utils.app_enum.ErrorType
@@ -63,4 +65,18 @@ abstract class BaseVmActivity<D : ViewDataBinding, V : BaseViewModel>(
         })
     }
 
+    fun checkBlock(){
+        mViewModel.checkUserBlock {block,msg->
+            if(block){
+                DialogAlert(
+                    view = mBinding.root,
+                    message = msg,
+                    actionText = "OK",
+                    action = {
+                        gotoNewTask(LoginActivity::class.java)
+                    }
+                ).show()
+            }
+        }
+    }
 }

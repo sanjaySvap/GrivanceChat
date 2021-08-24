@@ -53,3 +53,9 @@ class UserData(
     val updated_at:String = "",
 )
 
+
+class BlockModel {
+    val is_block:Boolean = false
+}
+
+

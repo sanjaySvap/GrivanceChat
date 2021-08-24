@@ -70,4 +70,9 @@ interface ApiService {
     ): Response<BaseDataModel<Any>>
 
 
+    @POST("/auth/check_block_user")
+    suspend fun checkBlockUser(
+        @Query("user_name") email: String
+    ): Response<BaseDataModel<BlockModel>>
+
 }

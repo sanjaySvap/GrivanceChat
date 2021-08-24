@@ -15,6 +15,7 @@ import com.svap.chat.ui.chat.model.UsersResult
 import com.svap.chat.utils.EXTRA_KEY_RECEIVER_ID
 import com.svap.chat.utils.EXTRA_KEY_SOCKET_ID
 import com.svap.chat.utils.EXTRA_KEY_USER_NAME
+import com.svap.chat.utils.extentions.parseRecentTime
 import com.svap.chat.utils.extentions.parseTime
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -43,7 +44,7 @@ class ChatUserAdapter(
     inner class MyViewHolderUser(val mBinding: ItemMessageBinding) : BaseViewHolder(mBinding.root) {
         override fun bindData(position: Int) {
             mBinding.user = mList[position]
-            mBinding.tvDate.text = parseTime(mList[position].last_sent_date)
+            mBinding.tvDate.text = parseRecentTime(mList[position].last_sent_date)
             mBinding.root.setOnClickListener {
                 mCallback.getCallbackItem(mList[position],position)
             }

@@ -79,22 +79,43 @@ fun setDateTimeFormat(value: String, format: String = "dd-MM-yyyy hh:mm a"): Str
     return ""
 }
 
-fun parseTime(dateStr: String): String {
+fun parseRecentTime(dateStr: String?): String {
+    if(dateStr == null){
+        return  ""
+    }
+    val dStr = getDateTimeFormat(dateStr)
+    return if(dStr.equals("Today",true)){
+        val simpleDateFormatServer = SimpleDateFormat(MSG_DATE_FORMAT, Locale.getDefault())
+        val messageDate = simpleDateFormatServer.parse(dateStr?:"") ?: Date()
+        val f = SimpleDateFormat("hh:mm a", Locale.getDefault())
+        f.format(Date(messageDate.time))
+    }else{
+        dStr
+    }
+}
+
+fun parseTime(dateStr: String?): String {
+    if(dateStr == null){
+        return  ""
+    }
     val simpleDateFormatServer = SimpleDateFormat(MSG_DATE_FORMAT, Locale.getDefault())
-    val messageDate = simpleDateFormatServer.parse(dateStr) ?: Date()
+    val messageDate = simpleDateFormatServer.parse(dateStr?:"") ?: Date()
     val f = SimpleDateFormat("hh:mm a", Locale.getDefault())
     return f.format(Date(messageDate.time))
 }
 
-fun getDateTimeFormat(dateStr: String): String {
+fun getDateTimeFormat(dateStr: String?): String {
     try {
+        if(dateStr == null){
+            return ""
+        }
         val simpleDateFormatServer = SimpleDateFormat(MSG_DATE_FORMAT, Locale.getDefault())
         val messageDate = simpleDateFormatServer.parse(dateStr) ?: Date()
         val calendar = Calendar.getInstance()
         val today = calendar.time
         calendar.add(Calendar.DAY_OF_YEAR, -1)
         val yesterday = calendar.time
-        val dateFormatter = SimpleDateFormat("yyyy-MM-dd",Locale.getDefault())
+        val dateFormatter = SimpleDateFormat("MM-dd-yyyy",Locale.getDefault())
 
         return when {
             compareTwoDates(dateFormatter.format(messageDate), dateFormatter.format(today)) -> "Today"

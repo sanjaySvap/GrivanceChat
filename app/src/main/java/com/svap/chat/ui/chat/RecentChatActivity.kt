@@ -1,6 +1,7 @@
 package com.svap.chat.ui.chat
 
 import android.content.Intent
+import android.os.Bundle
 import android.util.Log
 import com.google.gson.Gson
 import com.svap.chat.R
@@ -28,6 +29,11 @@ class RecentChatActivity : BaseSocketActivity<ActivityRecentChatBinding>(
         ChatUserAdapter(mList, this)
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        checkBlock()
+    }
     override fun initAdapter() {
         super.initAdapter()
         mBinding.recyclerView.adapter = mAdapter
@@ -36,6 +42,11 @@ class RecentChatActivity : BaseSocketActivity<ActivityRecentChatBinding>(
                 18, 18, 18, 18
             )
         )
+    }
+
+    override fun initView() {
+        super.initView()
+        checkBlock()
     }
 
     override fun initListener() {

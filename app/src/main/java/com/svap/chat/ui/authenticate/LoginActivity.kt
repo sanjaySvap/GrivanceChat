@@ -55,8 +55,6 @@ class LoginActivity : BaseVmActivity<ActivityLoginBinding, AuthViewModel>(
                     hashMapOf(
                             "user_name" to userName,
                             "password" to password,
-                            "device_type" to "android",
-                            "device_token" to mSharePresenter.deviceToken,
                     )
             ) {
                 gotoNewTask(

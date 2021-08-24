@@ -9,6 +9,7 @@ import com.google.gson.Gson
 import com.svap.chat.MyApp
 import com.svap.chat.ui.chat.model.MessageDataModel
 import com.svap.chat.ui.chat.model.MessageModel
+import com.svap.chat.ui.home.viewModel.HomeViewModel
 import com.svap.chat.utils.NO_NETWORK_ERROR
 import com.svap.chat.utils.SOCKET_LOCAL
 import io.socket.client.IO
@@ -20,7 +21,7 @@ import org.json.JSONObject
 
 abstract class BaseSocketActivity<D : ViewDataBinding>(
         resourceId: Int,
-) : BaseActivity<D>(resourceId) {
+) : BaseVmActivity<D,HomeViewModel>(resourceId,HomeViewModel::class) {
     val TAG_SOCKET = "SOCKET_CHAT"
     var mSocket: Socket? = null
     var isConnected = true
@@ -112,5 +113,6 @@ abstract class BaseSocketActivity<D : ViewDataBinding>(
             })
         }
     }
+
 
 }

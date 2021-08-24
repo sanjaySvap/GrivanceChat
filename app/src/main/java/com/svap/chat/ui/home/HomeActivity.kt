@@ -70,6 +70,7 @@ class HomeActivity : BaseVmActivity<ActivityHomeBinding, HomeViewModel>(
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         makeStatusBarTransparent(true)
+        checkBlock()
         initProfile()
         updateHome()
     }
@@ -97,7 +98,7 @@ class HomeActivity : BaseVmActivity<ActivityHomeBinding, HomeViewModel>(
 
     private fun updateHome() {
         if (mHomeFragment == null) {
-            mHomeFragment = HomeFragment(mCurrentCountry)
+            mHomeFragment = HomeFragment()
         }
         updateFragmentContainer(mHomeFragment!!)
     }
@@ -139,6 +140,7 @@ class HomeActivity : BaseVmActivity<ActivityHomeBinding, HomeViewModel>(
             }
 
             tvSupport.setOnClickListener {
+                checkBlock()
                 closeDrawer()
                 val currentFragment =
                         supportFragmentManager.findFragmentById(R.id.fragment_container)
@@ -160,6 +162,7 @@ class HomeActivity : BaseVmActivity<ActivityHomeBinding, HomeViewModel>(
             }
 
             tvEdit.setOnClickListener {
+                checkBlock()
                 closeDrawer()
                 val currentFragment =
                         supportFragmentManager.findFragmentById(R.id.fragment_container)

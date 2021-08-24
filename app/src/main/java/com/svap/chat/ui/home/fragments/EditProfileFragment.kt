@@ -5,6 +5,7 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
 import android.provider.MediaStore
+import android.text.InputFilter
 import android.text.TextUtils
 import android.util.Log
 import androidx.lifecycle.Observer
@@ -74,6 +75,17 @@ class EditProfileFragment : BaseVmFragment<FragmentEditProfileBinding, ProfileVi
         super.initView()
         initProfile()
         mViewModel.getProfile()
+
+        mBinding.etFirstName.filters = arrayOf(
+                InputFilter { cs, _, _, _, _, _ ->
+                    if (cs == "") {
+                        return@InputFilter cs
+                    }
+                    if (cs.toString().matches("[a-zA-Z ]+".toRegex())) {
+                        cs
+                    } else ""
+                }
+        )
     }
 
     override fun initClicks() {
@@ -121,7 +133,7 @@ class EditProfileFragment : BaseVmFragment<FragmentEditProfileBinding, ProfileVi
         }
 
         mBinding.btnSave.setOnClickListener {
-            edirProfile()
+            editProfile()
         }
 
         mBinding.tvDob.setOnClickListener {
@@ -129,16 +141,23 @@ class EditProfileFragment : BaseVmFragment<FragmentEditProfileBinding, ProfileVi
         }
     }
 
-    private fun edirProfile() {
+    private fun editProfile() {
         val names = mBinding.etFirstName.getString().split(" ")
         val email = mBinding.etEmail.getString()
         val mobile = mBinding.etMobile.getString()
 
         val firstName = names[0]
-        val lastName = if (names.size > 1) names[names.size - 1] else ""
-
+        val lastName = if (names.size > 1) {
+            names.subList(1,names.size).joinToString("")
+        } else
+            ""
         if (firstName.isEmpty()) {
             mBinding.root.showSnackbar("Please Enter your first name")
+            return
+        }
+
+        if (lastName.isEmpty()) {
+            mBinding.root.showSnackbar("Please Enter your last name")
             return
         }
 
@@ -161,9 +180,9 @@ class EditProfileFragment : BaseVmFragment<FragmentEditProfileBinding, ProfileVi
                 "Preference" to pref.toRequestBody(),
         )
         Log.d("imagePath", "imagePath " + mIamgePath)
-        if (mIamgePath == "" && !TextUtils.isEmpty(mSharePresenter.getCurrentUser().image_name)) {
+        /*if (mIamgePath == "" && !TextUtils.isEmpty(mSharePresenter.getCurrentUser().image_name)) {
             mIamgePath = mSharePresenter.imagePath
-        }
+        }*/
         mViewModel.editProfile(
                 map,
                 mIamgePath
@@ -235,4 +254,5 @@ class EditProfileFragment : BaseVmFragment<FragmentEditProfileBinding, ProfileVi
     private fun setProfile(resultUri: Uri) {
         setImageUrlUri(mBinding.ivProfile, resultUri)
     }
+
 }

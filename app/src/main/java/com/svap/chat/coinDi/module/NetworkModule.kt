@@ -46,6 +46,7 @@ val networkModule = module {
             .addInterceptor(ConnectivityInterceptor(androidContext().applicationContext))
             .addInterceptor { chain ->
                 val prehelper:AppPreferencesHelper = get()
+                Log.d("device_token"," "+prehelper.deviceToken)
                 val request = chain.request().newBuilder()
                     .addHeader("Authorization", prehelper.token)
                     .addHeader("language", "en")
