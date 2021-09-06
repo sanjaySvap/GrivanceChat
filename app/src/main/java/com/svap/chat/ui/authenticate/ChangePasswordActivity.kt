@@ -38,6 +38,7 @@ class ChangePasswordActivity : BaseVmActivity<ActivityChangePasswordBinding, Aut
                 mBinding.root.showSnackbar(msg?:"")
                 return@setOnClickListener
             }
+
             if(password != password2){
                 showToast("Password should be matched")
                 return@setOnClickListener

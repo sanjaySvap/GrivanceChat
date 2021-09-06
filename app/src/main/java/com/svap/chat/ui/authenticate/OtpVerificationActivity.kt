@@ -9,6 +9,7 @@ import com.svap.chat.base.BaseVmActivity
 import com.svap.chat.databinding.ActivityOtpVerificationBinding
 import com.svap.chat.ui.authenticate.viewModel.AuthViewModel
 import com.svap.chat.utils.app_enum.Extra
+import com.svap.chat.utils.extentions.showSnackbar
 import com.svap.chat.utils.extentions.showToast
 
 class OtpVerificationActivity : BaseVmActivity<ActivityOtpVerificationBinding, AuthViewModel>(
@@ -21,7 +22,9 @@ class OtpVerificationActivity : BaseVmActivity<ActivityOtpVerificationBinding, A
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        showToast("An OTP has been  shared on registered email")
+        mBinding.root.postDelayed({
+            mBinding.root.showSnackbar("An OTP has been  shared on registered email")
+        },500)
     }
 
     override fun initClicks() {

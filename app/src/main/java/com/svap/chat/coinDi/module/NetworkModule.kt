@@ -7,7 +7,6 @@ import android.os.Build
 import android.util.Log
 import com.google.gson.GsonBuilder
 import com.svap.chat.BuildConfig
-import com.svap.chat.utils.API_LOCAL
 import com.svap.chat.utils.AppPreferencesHelper
 import com.svap.chat.utils.networkRequest.ApiService
 import okhttp3.Interceptor
@@ -29,7 +28,7 @@ val networkModule = module {
     single {
         val fac = GsonConverterFactory.create(GsonBuilder().setLenient().create())
         Retrofit.Builder()
-            .baseUrl(API_LOCAL)
+            .baseUrl(BuildConfig.BASE_URL)
             .client(get())
             .addConverterFactory(fac)
             .addConverterFactory(ScalarsConverterFactory.create())
@@ -45,7 +44,7 @@ val networkModule = module {
             .connectTimeout(120, TimeUnit.SECONDS)
             .addInterceptor(ConnectivityInterceptor(androidContext().applicationContext))
             .addInterceptor { chain ->
-                val prehelper:AppPreferencesHelper = get()
+                val prehelper: AppPreferencesHelper = get()
                 Log.d("device_token"," "+prehelper.deviceToken)
                 val request = chain.request().newBuilder()
                     .addHeader("Authorization", prehelper.token)

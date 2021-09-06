@@ -8,7 +8,9 @@ class AppPreferencesHelper
 internal constructor(val mPrefs: SharedPreferences) {
 
     fun clearData() {
+        val dt = deviceToken
         mPrefs.edit().clear().apply()
+        deviceToken = dt
     }
 
     var deviceId: String
@@ -22,6 +24,10 @@ internal constructor(val mPrefs: SharedPreferences) {
     var chooseCountry: Boolean
         get() = mPrefs.getBoolean("chooseCountry", false)
         set(value) = mPrefs.edit().putBoolean("chooseCountry", value).apply()
+
+    var isLoggedId: Boolean
+        get() = mPrefs.getBoolean("isLoggedId", false)
+        set(value) = mPrefs.edit().putBoolean("isLoggedId", value).apply()
 
 
     var chooseCountryId: String

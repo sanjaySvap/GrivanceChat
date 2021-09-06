@@ -64,9 +64,9 @@ class EditProfileFragment : BaseVmFragment<FragmentEditProfileBinding, ProfileVi
             mBinding.tvCountry.text = residential_country
             mBinding.tvDob.text = dob ?: ""
             mCountry = residential_country
-
             mDob = dob
-            mBinding.checkCall.isChecked = Preference.equals("call", true)
+            // mBinding.checkCall.isChecked = Preference.contains("call", true)
+            mBinding.checkCall.isChecked = Preference.split(",").any { it.equals("call",true) }
             setProfileImageUrl(mBinding.ivProfile, image_name)
         }
     }

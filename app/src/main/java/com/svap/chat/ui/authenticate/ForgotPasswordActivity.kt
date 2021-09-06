@@ -7,8 +7,10 @@ import com.svap.chat.R
 import com.svap.chat.base.BaseVmActivity
 import com.svap.chat.databinding.ActivityForgotPasswordBinding
 import com.svap.chat.ui.authenticate.viewModel.AuthViewModel
+import com.svap.chat.utils.ValidationHelper
 import com.svap.chat.utils.app_enum.Extra
 import com.svap.chat.utils.extentions.getString
+import com.svap.chat.utils.extentions.showSnackbar
 import com.svap.chat.utils.extentions.showToast
 
 class ForgotPasswordActivity : BaseVmActivity<ActivityForgotPasswordBinding, AuthViewModel>
@@ -19,12 +21,15 @@ class ForgotPasswordActivity : BaseVmActivity<ActivityForgotPasswordBinding, Aut
 
         mBinding.btnNext.setOnClickListener {
             val email = mBinding.etEmail.getString()
-            if (TextUtils.isEmpty(email)) {
-                showToast("Enter valid email")
+            if (email.isEmpty()) {
+                mBinding.root.showSnackbar("Please Enter your Email ID")
+                return@setOnClickListener
+            } else if (!ValidationHelper.validateEmail(email)) {
+                mBinding.root.showSnackbar("Please Enter valid Email")
                 return@setOnClickListener
             }
+
             mViewModel.forgotPassword(email) {
-                showToast(it)
                 goto(Intent(this,
                     OtpVerificationActivity::class.java).apply {
                     putExtra(Extra.EMAIL, email)

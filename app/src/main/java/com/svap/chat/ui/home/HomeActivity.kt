@@ -181,6 +181,7 @@ class HomeActivity : BaseVmActivity<ActivityHomeBinding, HomeViewModel>(
                         actionText = "Yes",
                         actionNoText = "No", action = {
                     mSharePresenter.clearData()
+                    mSharePresenter.isLoggedId = false
                     gotoNewTask(LoginActivity::class.java)
                 }).show()
             }

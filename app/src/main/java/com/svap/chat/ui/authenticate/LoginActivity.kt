@@ -57,6 +57,7 @@ class LoginActivity : BaseVmActivity<ActivityLoginBinding, AuthViewModel>(
                             "password" to password,
                     )
             ) {
+                mSharePresenter.isLoggedId = true
                 gotoNewTask(
                         Intent(this@LoginActivity, HomeActivity::class.java).apply {
                             putExtra("show", intent.getBooleanExtra("show", false))

@@ -15,7 +15,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(R.layout.activity_spl
         super.onCreate(savedInstanceState)
         hideSystemUI()
         mBinding.root.postDelayed({
-            if(mSharePresenter.getCurrentUser().id.isNotEmpty()){
+            if(mSharePresenter.isLoggedId){
                 gotoFinish(HomeActivity::class.java)
             }else{
                 gotoFinish(LoginActivity::class.java)

@@ -35,17 +35,19 @@ class FirebaseMessage : FirebaseMessagingService() {
     private var builder: NotificationCompat.Builder? = null
     private val NOTIFICATION_CHANNEL_NAME = "Malik Grievance"
     private val NOTIFICATION_CHANNEL_ID = "com.grievance"
+    private val mSharedPresenter: AppPreferencesHelper = GlobalContext.get().get()
+
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         super.onMessageReceived(remoteMessage)
         addNotification(remoteMessage)
     }
     override fun onNewToken(token: String) {
         super.onNewToken(token)
+        mSharedPresenter.deviceToken = token
     }
     private fun addNotification(remoteMessage: RemoteMessage?) {
         Log.d("FirebaseMessage","remoteMessage "+Gson().toJson(remoteMessage?.data))
         val data = Gson().fromJson(Gson().toJson(remoteMessage?.data), NotificationData::class.java)
-
         alarmNotificationManager = this
                 .getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
@@ -64,12 +66,13 @@ class FirebaseMessage : FirebaseMessagingService() {
         }
         builder?.setSmallIcon(R.drawable.notification_logo)
         builder?.color = ContextCompat.getColor(this, R.color.colorGreen)
-        builder?.setContentTitle(data.subtitle)
-        builder?.setContentText(data.title)
+        builder?.setContentTitle(data.title)
+        builder?.setContentText(data.subtitle)
         builder?.setContentIntent(contentIntent)
         builder?.setAutoCancel(true)
         alarmNotificationManager?.notify(1, builder?.build())
     }
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     internal fun setNotificationCompatChaanl() {
         val importance = NotificationManager.IMPORTANCE_DEFAULT
@@ -85,9 +88,8 @@ class FirebaseMessage : FirebaseMessagingService() {
                 getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.createNotificationChannel(notificationChannel)
     }
-
-
 }
+
 data class NotificationData(
         var subtitle: String? = "",
         var title: String? = "",
