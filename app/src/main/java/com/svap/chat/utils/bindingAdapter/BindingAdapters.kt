@@ -15,6 +15,7 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
+import com.svap.chat.BuildConfig
 import com.svap.chat.R
 import com.svap.chat.utils.extentions.openLink
 import java.text.ParseException
@@ -27,7 +28,7 @@ import java.util.regex.Pattern
 fun setProfileImageUrl(view: ImageView, imageUrl: String?) {
 
     val url = imageUrl?.let {
-        if(!TextUtils.isEmpty(it) && !it.startsWith("http")) "http://15.207.148.33:4001/image/$it" else it
+        if(!TextUtils.isEmpty(it) && !it.startsWith("http")) "${BuildConfig.BASE_URL}image$it" else it
     }?:""
     try {
         Log.d("ReceiverUserImage", "setProfileImageUrl view $url ")
@@ -44,7 +45,7 @@ fun setProfileImageUrl(view: ImageView, imageUrl: String?) {
 fun setImageUrl(view: ImageView, imageUrl: String?) {
     try {
         val url = imageUrl?.let {
-            if(!TextUtils.isEmpty(it) && !it.startsWith("http")) "http://15.207.148.33:4001/image/$it" else it
+            if(!TextUtils.isEmpty(it) && !it.startsWith("http")) "${BuildConfig.BASE_URL}image/$it" else it
         }?:""
         Log.d("ReceiverUserImage", "setProfileImageUrl $url ")
         Glide.with(view.context).load(url).placeholder(R.drawable.dummy_home).into(view)
