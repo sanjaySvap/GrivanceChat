@@ -29,6 +29,51 @@
             {
               "client_id": "684099991501-odq47fsii1s71rhc3eebujqj573dh2q9.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "684099991501-98711iohafmu3a0i77i10q0eko94u6bk.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.malikGrievance",
+                "app_store_id": "1583899433"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:684099991501:android:e0ab7f9b17f08a0d75b684",
+        "android_client_info": {
+          "package_name": "com.malik.grievance"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "684099991501-odq47fsii1s71rhc3eebujqj573dh2q9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBNV-x5k0cOOeG2Z5yhSVfLafirFgUGRiM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "684099991501-odq47fsii1s71rhc3eebujqj573dh2q9.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "684099991501-98711iohafmu3a0i77i10q0eko94u6bk.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.malikGrievance",
+                "app_store_id": "1583899433"
+              }
             }
           ]
         }
