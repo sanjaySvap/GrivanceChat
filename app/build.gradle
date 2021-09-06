@@ -2,6 +2,9 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'kotlin-kapt'
+    id 'com.google.gms.google-services'
+    id 'com.google.firebase.crashlytics'
+
 }
 
 android {
@@ -9,7 +12,7 @@ android {
     buildToolsVersion "30.0.3"
 
     defaultConfig {
-        applicationId "com.svap.chat"
+        applicationId "com.grievance"
         minSdkVersion 21
         targetSdkVersion 30
         versionCode 1
@@ -17,15 +20,36 @@ android {
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
+
+    signingConfigs {
+        release {
+            storeFile file(STORE_FILE)
+            storePassword STORE_PASSWORD
+            keyAlias KEY_ALIAS
+            keyPassword KEY_PASSWORD
+        }
+    }
+    
     buildFeatures {
         dataBinding = true
     }
     buildTypes {
-        release {
+        debug {
+            debuggable true
             minifyEnabled false
+            applicationIdSuffix ".debug"
+            buildConfigField "String", "BASE_URL", API_LOCAL
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+        release {
+            debuggable false
+            minifyEnabled false
+            buildConfigField "String", "BASE_URL", API_PRODUCTION
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
     }
+
 
 
     compileOptions {
@@ -91,6 +115,7 @@ dependencies {
 
     //Image Cropper
     implementation 'com.github.yalantis:ucrop:2.2.6'
+    implementation 'com.google.firebase:firebase-messaging:22.0.0'
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
