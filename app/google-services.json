@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "684099991501",
+    "project_id": "grievance-91c83",
+    "storage_bucket": "grievance-91c83.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:684099991501:android:cc106926b277c58a75b684",
+        "android_client_info": {
+          "package_name": "com.grievance"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "684099991501-odq47fsii1s71rhc3eebujqj573dh2q9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBNV-x5k0cOOeG2Z5yhSVfLafirFgUGRiM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "684099991501-odq47fsii1s71rhc3eebujqj573dh2q9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
