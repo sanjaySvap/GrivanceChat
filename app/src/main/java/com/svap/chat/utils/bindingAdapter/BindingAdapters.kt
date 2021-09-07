@@ -28,7 +28,7 @@ import java.util.regex.Pattern
 fun setProfileImageUrl(view: ImageView, imageUrl: String?) {
 
     val url = imageUrl?.let {
-        if(!TextUtils.isEmpty(it) && !it.startsWith("http")) "${BuildConfig.BASE_URL}image$it" else it
+        if(!TextUtils.isEmpty(it) && !it.startsWith("http")) "${BuildConfig.BASE_URL}image/$it" else it
     }?:""
     try {
         Log.d("ReceiverUserImage", "setProfileImageUrl view $url ")
@@ -75,10 +75,8 @@ fun setUrlSan(view: TextView?, body: String? = "") {
         return
     }
     val span = SpannableString(body)
-
     view?.let { textView ->
         val matcher = urlPattern.matcher(body)
-
         while (matcher.find()) {
             val url = matcher.group()
             val matchStart = matcher.start(1);

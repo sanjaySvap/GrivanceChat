@@ -113,6 +113,4 @@ abstract class BaseSocketActivity<D : ViewDataBinding>(
             })
         }
     }
-
-
 }
