@@ -41,7 +41,7 @@
                 android:layout_width="match_parent"
                 android:layout_marginHorizontal="16dp"
                 android:layout_marginTop="8dp"
-                android:text="jamesboner@gmail.com"
+                android:text="@string/supportmail"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/etMobile" />
