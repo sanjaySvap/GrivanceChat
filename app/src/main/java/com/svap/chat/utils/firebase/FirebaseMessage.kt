@@ -33,7 +33,7 @@ class FirebaseMessage : FirebaseMessagingService() {
 
     private var alarmNotificationManager: NotificationManager? = null
     private var builder: NotificationCompat.Builder? = null
-    private val NOTIFICATION_CHANNEL_NAME = "Malik Grievance"
+    private val NOTIFICATION_CHANNEL_NAME = "Malik's Grievance"
     private val NOTIFICATION_CHANNEL_ID = "com.grievance"
     private val mSharedPresenter: AppPreferencesHelper = GlobalContext.get().get()
 
