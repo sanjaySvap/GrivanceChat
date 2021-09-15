@@ -12,10 +12,8 @@ import com.svap.chat.databinding.ActivityOneToChatBinding
 import com.svap.chat.ui.chat.adapter.OneToOneChatAdapter
 import com.svap.chat.ui.chat.model.AllMessageResponse
 import com.svap.chat.ui.chat.model.MessageModel
-import com.svap.chat.utils.EXTRA_KEY_RECEIVER_ID
-import com.svap.chat.utils.EXTRA_KEY_SOCKET_ID
-import com.svap.chat.utils.EXTRA_KEY_USER_NAME
-import com.svap.chat.utils.MSG_DATE_FORMAT
+import com.svap.chat.ui.dialog.DialogBio
+import com.svap.chat.utils.*
 import com.svap.chat.utils.itemdecor.CustomItemVerDecoration
 import io.socket.emitter.Emitter
 import org.json.JSONObject
@@ -24,7 +22,7 @@ import java.util.*
 
 
 class OneToOneChatActivity : BaseSocketActivity<ActivityOneToChatBinding>(
-        R.layout.activity_one_to_chat
+    R.layout.activity_one_to_chat
 ) {
     private val messagesList: ArrayList<MessageModel> = arrayListOf()
     private val messageAdapter: OneToOneChatAdapter by lazy {
@@ -39,12 +37,16 @@ class OneToOneChatActivity : BaseSocketActivity<ActivityOneToChatBinding>(
     private val mReceiverUserName: String by lazy {
         intent?.getStringExtra(EXTRA_KEY_USER_NAME) ?: ""
     }
+    private val bio: String by lazy {
+        intent?.getStringExtra(EXTRA_KEY_BIO) ?: ""
+    }
 
     private var messageToSend = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mBinding.mTitle = mReceiverUserName
+        mBinding.bio = bio
         checkBlock()
     }
 
@@ -69,7 +71,7 @@ class OneToOneChatActivity : BaseSocketActivity<ActivityOneToChatBinding>(
 
     override fun initAdapter() {
         mBinding.recyclerView.addItemDecoration(
-                CustomItemVerDecoration(12)
+            CustomItemVerDecoration(12)
         )
         mBinding.recyclerView.adapter = messageAdapter
     }
@@ -86,19 +88,31 @@ class OneToOneChatActivity : BaseSocketActivity<ActivityOneToChatBinding>(
                 emitMessage()
 
                 val messageModel = MessageModel(
-                        from = mSharePresenter.getCurrentUser().id,
-                        to = mReceiverUserId,
-                        type = "text",
-                        file = "",
-                        isRead = 0,
-                        message = messageToSend,
-                        created_at = getCurrentDate(),
-                        timestamp = System.currentTimeMillis().toString()
+                    from = mSharePresenter.getCurrentUser().id,
+                    to = mReceiverUserId,
+                    type = "text",
+                    file = "",
+                    isRead = 0,
+                    message = messageToSend,
+                    created_at = getCurrentDate(),
+                    timestamp = System.currentTimeMillis().toString()
                 )
                 addMessageToList(messageModel)
                 mBinding.etMsg.setText("")
             }
         }
+
+        mBinding.toolbar1.tvBio.setOnClickListener {
+            if(!TextUtils.isEmpty(bio)){
+                DialogBio(mBinding.root, bio).show()
+            }
+        }
+        mBinding.toolbar1.tvTitle.setOnClickListener {
+            if(!TextUtils.isEmpty(bio)){
+                DialogBio(mBinding.root, bio).show()
+            }
+        }
+
     }
 
     private fun getCurrentDate(): String {
@@ -168,7 +182,7 @@ class OneToOneChatActivity : BaseSocketActivity<ActivityOneToChatBinding>(
 
     override fun onNewMessage(msgList: ArrayList<MessageModel>) {
         msgList.forEach {
-            if(it.from == mReceiverUserId){
+            if (it.from == mReceiverUserId) {
                 addMessageToList(it)
                 readMessage()
             }
@@ -176,7 +190,14 @@ class OneToOneChatActivity : BaseSocketActivity<ActivityOneToChatBinding>(
     }
 
     private class EmojiExcludeFilter : InputFilter {
-        override fun filter(source: CharSequence, start: Int, end: Int, dest: Spanned, dstart: Int, dend: Int): CharSequence? {
+        override fun filter(
+            source: CharSequence,
+            start: Int,
+            end: Int,
+            dest: Spanned,
+            dstart: Int,
+            dend: Int
+        ): CharSequence? {
             for (i in start until end) {
                 val type = Character.getType(source[i])
                 if (type == Character.SURROGATE.toInt() || type == Character.OTHER_SYMBOL.toInt()) {

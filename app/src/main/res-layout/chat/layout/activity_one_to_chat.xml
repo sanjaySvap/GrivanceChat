@@ -5,6 +5,9 @@
         <variable
             name="mTitle"
             type="String" />
+        <variable
+            name="bio"
+            type="String" />
     </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -17,7 +20,8 @@
         <include
             android:id="@+id/toolbar1"
             layout="@layout/action_bar"
-            app:title='@{mTitle}' />
+            app:title='@{mTitle}'
+            app:bio='@{bio}'/>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"

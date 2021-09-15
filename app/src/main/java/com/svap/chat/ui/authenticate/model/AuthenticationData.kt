@@ -35,6 +35,7 @@ class UserData(
     val image_name:String = "",
     val residential_country:String = "",
     val country_id:String = "",
+    val bio:String = "",
     val gender:String = "",
     val device_type:String = "",
     val device_token:String = "",

@@ -3,7 +3,9 @@ package com.svap.chat.ui.authenticate
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
-import android.util.Log
+import android.view.MotionEvent
+import android.view.View.OnTouchListener
+import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.Observer
 import com.fantasy.utils.extentions.gotoNewTask
 import com.svap.chat.R
@@ -18,6 +20,7 @@ import com.svap.chat.utils.extentions.showSnackbar
 import com.svap.chat.utils.extentions.toDatePicker
 import java.util.*
 import kotlin.collections.ArrayList
+
 
 class SignUpActivity : BaseVmActivity<ActivitySignupBinding, AuthViewModel>(
         R.layout.activity_signup,
@@ -55,6 +58,20 @@ class SignUpActivity : BaseVmActivity<ActivitySignupBinding, AuthViewModel>(
 
     override fun initListener() {
         super.initListener()
+
+        mBinding.etBio.setOnTouchListener(OnTouchListener { v, event ->
+            if (mBinding.etBio.hasFocus()) {
+                v.parent.requestDisallowInterceptTouchEvent(true)
+                when (event.action and MotionEvent.ACTION_MASK) {
+                    MotionEvent.ACTION_SCROLL -> {
+                        v.parent.requestDisallowInterceptTouchEvent(false)
+                        return@OnTouchListener true
+                    }
+                }
+            }
+            false
+        })
+
         mBinding.tvSignUp.setOnClickListener {
             signUp()
         }
@@ -69,6 +86,10 @@ class SignUpActivity : BaseVmActivity<ActivitySignupBinding, AuthViewModel>(
         mBinding.tvCountry.setOnClickListener {
             mSheet.show(supportFragmentManager, "")
         }
+
+        mBinding.etBio.doAfterTextChanged {
+            mBinding.tvWord.text = "${it.toString().length}"
+        }
     }
 
     private fun signUp() {
@@ -78,6 +99,7 @@ class SignUpActivity : BaseVmActivity<ActivitySignupBinding, AuthViewModel>(
             val email = mBinding.etEmail.getString()
             val mobile = mBinding.etMobie.getString()
             val password = mBinding.etPassword.getString()
+            val bio = mBinding.etBio.getString()
 
 
             if (firstName.isEmpty()) {
@@ -125,9 +147,10 @@ class SignUpActivity : BaseVmActivity<ActivitySignupBinding, AuthViewModel>(
             }
             val msg = ValidationHelper.validatePassword(password)
             if (!TextUtils.isEmpty(msg)) {
-                mBinding.root.showSnackbar(msg?:"")
+                mBinding.root.showSnackbar(msg ?: "")
                 return@run
             }
+
             if (password != etCnfPassword.getString()) {
                 mBinding.root.showSnackbar("Password should be matched")
                 return@run
@@ -141,6 +164,7 @@ class SignUpActivity : BaseVmActivity<ActivitySignupBinding, AuthViewModel>(
                             "email" to email,
                             "mobile_no" to mobile,
                             "dob" to mDob,
+                            "bio" to bio,
                             "residential_Country" to mCountry,
                             "password" to password
                     )

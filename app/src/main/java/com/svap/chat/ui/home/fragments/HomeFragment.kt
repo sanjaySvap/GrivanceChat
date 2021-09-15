@@ -19,6 +19,7 @@ import com.svap.chat.ui.dialog.DialogAlert
 import com.svap.chat.ui.home.HomeActivity
 import com.svap.chat.ui.home.adapter.HomeDataAdapter
 import com.svap.chat.ui.home.viewModel.HomeViewModel
+import com.svap.chat.utils.EXTRA_KEY_BIO
 import com.svap.chat.utils.EXTRA_KEY_RECEIVER_ID
 import com.svap.chat.utils.EXTRA_KEY_SOCKET_ID
 import com.svap.chat.utils.EXTRA_KEY_USER_NAME
@@ -119,6 +120,7 @@ class HomeFragment() :
             intent.putExtra(EXTRA_KEY_USER_NAME, mUserList[position].first_name)
             intent.putExtra(EXTRA_KEY_RECEIVER_ID, mUserList[position].id)
             intent.putExtra(EXTRA_KEY_SOCKET_ID, mUserList[position].socket_id)
+            intent.putExtra(EXTRA_KEY_BIO, mUserList[position].bio)
             requireActivity().goto(intent)
         }
     }

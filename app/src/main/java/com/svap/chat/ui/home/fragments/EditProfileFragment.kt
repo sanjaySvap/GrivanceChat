@@ -6,8 +6,10 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.provider.MediaStore
 import android.text.InputFilter
-import android.text.TextUtils
 import android.util.Log
+import android.view.MotionEvent
+import android.view.View
+import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.Observer
 import com.fantasy.utils.extentions.getAllCountry
 import com.fantasy.utils.extentions.optionDialog
@@ -63,18 +65,34 @@ class EditProfileFragment : BaseVmFragment<FragmentEditProfileBinding, ProfileVi
             mBinding.etEmail.setText(email ?: "")
             mBinding.tvCountry.text = residential_country
             mBinding.tvDob.text = dob ?: ""
+            mBinding.etBio.setText(bio)
             mCountry = residential_country
             mDob = dob
             // mBinding.checkCall.isChecked = Preference.contains("call", true)
-            mBinding.checkCall.isChecked = Preference.split(",").any { it.equals("call",true) }
+            mBinding.checkCall.isChecked = Preference.split(",").any { it.equals("call", true) }
             setProfileImageUrl(mBinding.ivProfile, image_name)
         }
     }
 
     override fun initView() {
         super.initView()
+
         initProfile()
+
         mViewModel.getProfile()
+
+        mBinding.etBio.setOnTouchListener(View.OnTouchListener { v, event ->
+            if (mBinding.etBio.hasFocus()) {
+                v.parent.requestDisallowInterceptTouchEvent(true)
+                when (event.action and MotionEvent.ACTION_MASK) {
+                    MotionEvent.ACTION_SCROLL -> {
+                        v.parent.requestDisallowInterceptTouchEvent(false)
+                        return@OnTouchListener true
+                    }
+                }
+            }
+            false
+        })
 
         mBinding.etFirstName.filters = arrayOf(
                 InputFilter { cs, _, _, _, _, _ ->
@@ -90,6 +108,11 @@ class EditProfileFragment : BaseVmFragment<FragmentEditProfileBinding, ProfileVi
 
     override fun initClicks() {
         super.initClicks()
+
+        mBinding.etBio.doAfterTextChanged {
+            mBinding.tvWord.text = "${it.toString().length}"
+        }
+
         mBinding.ivCamera.setOnClickListener {
             requireActivity().optionDialog("How would you like to add an photo?",
                     primaryKey = "Gallery",
@@ -145,10 +168,11 @@ class EditProfileFragment : BaseVmFragment<FragmentEditProfileBinding, ProfileVi
         val names = mBinding.etFirstName.getString().split(" ")
         val email = mBinding.etEmail.getString()
         val mobile = mBinding.etMobile.getString()
+        val bio = mBinding.etBio.getString()
 
         val firstName = names[0]
         val lastName = if (names.size > 1) {
-            names.subList(1,names.size).joinToString("")
+            names.subList(1, names.size).joinToString("")
         } else
             ""
         if (firstName.isEmpty()) {
@@ -176,6 +200,7 @@ class EditProfileFragment : BaseVmFragment<FragmentEditProfileBinding, ProfileVi
                 "first_name" to firstName.toRequestBody(),
                 "last_name" to lastName.toRequestBody(),
                 "dob" to mDob.toRequestBody(),
+                "bio" to bio.toRequestBody(),
                 "residential_Country" to mCountry.toRequestBody(),
                 "Preference" to pref.toRequestBody(),
         )

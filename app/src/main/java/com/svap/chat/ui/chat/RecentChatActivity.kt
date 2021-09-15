@@ -12,6 +12,7 @@ import com.svap.chat.ui.chat.adapter.ChatUserAdapter
 import com.svap.chat.ui.chat.model.ChatUserResponse
 import com.svap.chat.ui.chat.model.MessageModel
 import com.svap.chat.ui.chat.model.UsersResult
+import com.svap.chat.utils.EXTRA_KEY_BIO
 import com.svap.chat.utils.EXTRA_KEY_RECEIVER_ID
 import com.svap.chat.utils.EXTRA_KEY_SOCKET_ID
 import com.svap.chat.utils.EXTRA_KEY_USER_NAME
@@ -95,6 +96,7 @@ class RecentChatActivity : BaseSocketActivity<ActivityRecentChatBinding>(
         intent.putExtra(EXTRA_KEY_USER_NAME, mList[position].first_name)
         intent.putExtra(EXTRA_KEY_RECEIVER_ID, mList[position].id)
         intent.putExtra(EXTRA_KEY_SOCKET_ID, mList[position].socket_id)
+        intent.putExtra(EXTRA_KEY_BIO, mList[position].bio)
         startActivity(intent)
     }
 
