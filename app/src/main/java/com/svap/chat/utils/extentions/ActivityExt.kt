@@ -13,6 +13,7 @@ import android.util.DisplayMetrics
 import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.core.app.ShareCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
@@ -222,6 +223,14 @@ fun Context.optionDialog(
 
         show()
     }
+}
+
+fun Activity.shareApp(shareText: String) {
+    ShareCompat.IntentBuilder.from(this)
+        .setType("text/plain")
+        .setChooserTitle("Share By")
+        .setText(shareText)
+        .startChooser()
 }
 
 

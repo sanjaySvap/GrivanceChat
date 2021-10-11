@@ -20,7 +20,6 @@ fun Context.isConnected(): Boolean {
     return !(info == null || !info.isConnected)
 }
 
-
 fun Context.openLink(
     url: String
 ) {

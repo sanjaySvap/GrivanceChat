@@ -114,15 +114,13 @@ class HomeFragment() :
     }
 
     override fun getCallbackItem(item: HomeUser, position: Int, tag: String) {
-        if (item.is_online == 1) {
-            mHomeActivity?.destroySocket()
-            val intent = Intent(requireActivity(), OneToOneChatActivity::class.java)
-            intent.putExtra(EXTRA_KEY_USER_NAME, mUserList[position].first_name)
-            intent.putExtra(EXTRA_KEY_RECEIVER_ID, mUserList[position].id)
-            intent.putExtra(EXTRA_KEY_SOCKET_ID, mUserList[position].socket_id)
-            intent.putExtra(EXTRA_KEY_BIO, mUserList[position].bio)
-            requireActivity().goto(intent)
-        }
+        mHomeActivity?.destroySocket()
+        val intent = Intent(requireActivity(), OneToOneChatActivity::class.java)
+        intent.putExtra(EXTRA_KEY_USER_NAME, mUserList[position].first_name)
+        intent.putExtra(EXTRA_KEY_RECEIVER_ID, mUserList[position].id)
+        intent.putExtra(EXTRA_KEY_SOCKET_ID, mUserList[position].socket_id)
+        intent.putExtra(EXTRA_KEY_BIO, mUserList[position].bio)
+        requireActivity().goto(intent)
     }
 
     private val onHomeUserList = Emitter.Listener { args ->

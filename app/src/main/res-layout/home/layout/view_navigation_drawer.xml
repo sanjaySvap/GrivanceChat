@@ -5,8 +5,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:fitsSystemWindows="true">
+        android:fitsSystemWindows="true"
+        android:orientation="vertical">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -19,15 +19,15 @@
                 android:layout_height="88dp"
                 android:layout_marginTop="20dp"
                 android:scaleType="fitCenter"
-                app:strokeWidth="1dp"
-                app:strokeColor="@color/white"
-                app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent"
                 android:src="@drawable/dummy_profile"
                 app:layout_constraintBottom_toTopOf="@id/tv_name"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_chainStyle="packed" />
+                app:layout_constraintVertical_chainStyle="packed"
+                app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent"
+                app:strokeColor="@color/white"
+                app:strokeWidth="1dp" />
 
             <TextView
                 android:id="@+id/tv_name"
@@ -138,6 +138,24 @@
                     android:textColor="@color/colorTitle"
                     android:textSize="18sp"
                     app:drawableStartCompat="@drawable/ic_support"
+                    app:fontFamily="@font/medium" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="8dp"
+                    android:background="#dfdfdf" />
+
+                <TextView
+                    android:id="@+id/tv_invite"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="20dp"
+                    android:drawablePadding="8dp"
+                    android:text="Invite Friends"
+                    android:textColor="@color/colorTitle"
+                    android:textSize="18sp"
+                    app:drawableStartCompat="@drawable/ic_invite"
                     app:fontFamily="@font/medium" />
 
                 <View

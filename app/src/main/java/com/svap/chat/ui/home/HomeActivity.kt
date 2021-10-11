@@ -1,5 +1,6 @@
 package com.svap.chat.ui.home
 
+import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -9,13 +10,11 @@ import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.widget.Toast
+import androidx.core.app.ShareCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import com.fantasy.utils.extentions.getDialogWithBinding
-import com.fantasy.utils.extentions.goto
-import com.fantasy.utils.extentions.gotoNewTask
-import com.fantasy.utils.extentions.makeStatusBarTransparent
+import com.fantasy.utils.extentions.*
 import com.google.gson.Gson
 import com.svap.chat.R
 import com.svap.chat.base.BaseVmActivity
@@ -173,6 +172,12 @@ class HomeActivity : BaseVmActivity<ActivityHomeBinding, HomeViewModel>(
                 updateFragmentContainer(EditProfileFragment())
             }
 
+            tvInvite.setOnClickListener {
+                shareApp(
+                    "We are delighted to invite you to download Malik's Grievance app. Please click the link\n https://malikgrievance.page.link/share"
+                )
+            }
+
             tvLogout.setOnClickListener {
                 closeDrawer()
                 DialogConfirm(mBinding.root,
@@ -229,11 +234,11 @@ class HomeActivity : BaseVmActivity<ActivityHomeBinding, HomeViewModel>(
     }
 
     private fun openDrawer() {
-        mBinding.drawerLayout.openDrawer(Gravity.START)
+        mBinding.drawerLayout.openDrawer(Gravity.LEFT)
     }
 
     private fun closeDrawer() {
-        mBinding.drawerLayout.closeDrawer(Gravity.START)
+        mBinding.drawerLayout.closeDrawer(Gravity.RIGHT)
     }
 
     private fun showCountrySelection() {
@@ -362,5 +367,4 @@ class HomeActivity : BaseVmActivity<ActivityHomeBinding, HomeViewModel>(
             Log.d(TAG_SOCKET, "onConnectError " + Gson().toJson(it))
         }
     }
-
 }
