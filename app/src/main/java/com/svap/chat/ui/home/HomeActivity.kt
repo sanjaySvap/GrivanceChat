@@ -157,7 +157,7 @@ class HomeActivity : BaseVmActivity<ActivityHomeBinding, HomeViewModel>(
                 val intent = Intent(Intent.ACTION_VIEW)
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 intent.data =
-                        Uri.parse("https://play.google.com/store/apps/developer?id=${BuildConfig.APPLICATION_ID}")
+                        Uri.parse("https://play.google.com/store/apps/details?id=${BuildConfig.APPLICATION_ID}")
                 startActivity(Intent.createChooser(intent, "Open with"))
             }
 
