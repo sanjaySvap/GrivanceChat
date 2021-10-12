@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.fantasy.utils.extentions.*
 import com.google.gson.Gson
+import com.svap.chat.BuildConfig
 import com.svap.chat.R
 import com.svap.chat.base.BaseVmActivity
 import com.svap.chat.databinding.ActivityHomeBinding
@@ -156,7 +157,7 @@ class HomeActivity : BaseVmActivity<ActivityHomeBinding, HomeViewModel>(
                 val intent = Intent(Intent.ACTION_VIEW)
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 intent.data =
-                        Uri.parse("https://play.google.com/store/apps/developer?id=${packageName}")
+                        Uri.parse("https://play.google.com/store/apps/developer?id=${BuildConfig.APPLICATION_ID}")
                 startActivity(Intent.createChooser(intent, "Open with"))
             }
 
