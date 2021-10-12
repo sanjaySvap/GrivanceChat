@@ -238,7 +238,7 @@ class HomeActivity : BaseVmActivity<ActivityHomeBinding, HomeViewModel>(
     }
 
     private fun closeDrawer() {
-        mBinding.drawerLayout.closeDrawer(Gravity.RIGHT)
+        mBinding.drawerLayout.closeDrawer(Gravity.LEFT)
     }
 
     private fun showCountrySelection() {
